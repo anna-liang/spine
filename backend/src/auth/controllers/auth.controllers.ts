@@ -6,7 +6,7 @@ export const googleAuth = passport.authenticate('google', {
 });
 
 export const googleCallback = passport.authenticate('google', {
-  successRedirect: '/dashboard',
+  successRedirect: `${process.env.DEV_CLIENT_URI}/dashboard`,
   failureRedirect: '/auth/failure',
 });
 
@@ -15,7 +15,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
     if (err) return next(err);
 
     req.session.destroy(() => {
-      res.redirect('/');
+      res.redirect(`${process.env.DEV_CLIENT_URI}`);
     });
   });
 };
