@@ -5,6 +5,7 @@ import session from 'express-session';
 import passport from './auth/passport.ts';
 import authRoutes from './auth/index.ts';
 import booksRoutes from './books/index.ts';
+import libraryRoutes from './library/index.ts';
 import { isUserLoggedIn } from './middleware/auth.middleware.ts';
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
 app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/books', booksRoutes);
+app.use('/shelves', libraryRoutes);
 
 // const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
@@ -38,12 +40,12 @@ app.use('/books', booksRoutes);
 //   console.log('Connected to PostgreSQL');
 // });
 
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
-});
+// app.get('/', (req, res) => {
+//   res.send('<a href="/auth/google">Authenticate with Google</a>');
+// });
 
-app.get('/dashboard', isUserLoggedIn, (req, res) => {
-  res.send('<h1>Welcome!</h1>');
-});
+// app.get('/dashboard', isUserLoggedIn, (req, res) => {
+//   res.send('<h1>Welcome!</h1>');
+// });
 
 export default app;
