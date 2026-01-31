@@ -3,14 +3,14 @@ import BookListItem from '../listItem/bookListItem';
 
 export default function BookList({ books }: { books: Book[] }) {
   return (
-    <div>
+    <ul>
       {books.map((book) => {
         return (
-          <div key={book.id}>
+          <li key={book.id}>
             <BookListItem book={book} />
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }

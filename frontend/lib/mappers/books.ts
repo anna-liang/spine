@@ -1,8 +1,8 @@
 import { GoogleVolume } from '@/types/external/googleBooks';
 import { Book } from '@/types/books';
 
-export function mapGoogleVolumeToBook(googleVolumes: GoogleVolume[]): Book[] {
-  const books: Book[] = googleVolumes.map((volume) => ({
+export function mapGoogleVolumeToBook(volume: GoogleVolume): Book {
+  const book: Book = {
     id: volume.id,
     title: volume.volumeInfo.title,
     authors: volume.volumeInfo.authors ?? [],
@@ -18,6 +18,6 @@ export function mapGoogleVolumeToBook(googleVolumes: GoogleVolume[]): Book[] {
       ? volume.volumeInfo.imageLinks.thumbnail
       : '',
     previewLink: volume.volumeInfo.previewLink,
-  }));
-  return books;
+  };
+  return book;
 }

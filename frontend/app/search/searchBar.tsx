@@ -1,22 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
 import { Book } from '../../types/books';
-import { mapGoogleVolumeToBook } from '@/lib/mappers/books';
 import BookList from '@/components/list/bookList';
+import { searchBook } from '@/api/booksService';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
   const [books, setBooks] = useState<Book[]>([]);
-  const searchBook = async (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_DEV_API_URL}/books/search?q=${encodeURIComponent(query)}`,
-      );
-      setBooks(mapGoogleVolumeToBook(res.data.items));
-      console.log(res.data.items);
+      const books = await searchBook(query);
+      setBooks(books);
+      console.log(books);
     } catch (err) {
       console.error(err);
     }
@@ -25,7 +22,7 @@ export default function SearchBar() {
   return (
     <div>
       <div className="flex h-50 items-center justify-center">
-        <form onSubmit={searchBook}>
+        <form onSubmit={handleSearch}>
           <input
             type="text"
             placeholder="Search books..."
