@@ -3,10 +3,10 @@ import { GoogleVolume } from '@/types/external/googleBooks';
 import { Book } from '@/types/books';
 import axios from 'axios';
 
-export const searchBook = async (query: string): Promise<Book[]> => {
+export const getBooks = async (query: string): Promise<Book[]> => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_DEV_API_URL}/books/search?q=${encodeURIComponent(query)}`,
+      `${process.env.NEXT_PUBLIC_DEV_API_URL}/books?q=${encodeURIComponent(query)}`,
     );
     const mappedBooks = res.data.items.map((volume: GoogleVolume) =>
       mapGoogleVolumeToBook(volume),
@@ -17,10 +17,10 @@ export const searchBook = async (query: string): Promise<Book[]> => {
   }
 };
 
-export const searchBookById = async (id: string): Promise<Book> => {
+export const getBookById = async (id: string): Promise<Book> => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_DEV_API_URL}/books/searchById?id=${encodeURIComponent(id)}`,
+      `${process.env.NEXT_PUBLIC_DEV_API_URL}/books/${id}`,
     );
     const mappedBook = mapGoogleVolumeToBook(res.data.results);
     return mappedBook;

@@ -17,7 +17,7 @@ export const getBooks = async (req: Request, res: Response) => {
 };
 
 export const getBookById = async (req: Request, res: Response) => {
-  const id = req.query.id as string;
+  const { id } = req.params;
   if (!id) {
     return res.status(400).json({ error: 'Missing query parameter "id"' });
   }

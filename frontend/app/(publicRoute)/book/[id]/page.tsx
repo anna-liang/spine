@@ -1,6 +1,7 @@
-import { searchBookById } from '@/api/booksService';
+import { getBookById } from '@/api/booksService';
 import { formatAuthors } from '@/utils/helpers';
 import Image from 'next/image';
+import SaveBookButton from './saveBookButton';
 
 interface BookPageProps {
   params: Promise<{ id: string }>;
@@ -8,7 +9,7 @@ interface BookPageProps {
 
 export default async function BookPage({ params }: BookPageProps) {
   const { id } = await params;
-  const book = await searchBookById(id);
+  const book = await getBookById(id);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -18,6 +19,7 @@ export default async function BookPage({ params }: BookPageProps) {
         <Image src={book.image} alt={book.title} width={100} height={100} />
       )}
       <div>{book.description}</div>
+      <SaveBookButton bookId={id} />
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Book } from '../../types/books';
 import BookList from '@/components/list/bookList';
-import { searchBook } from '@/api/booksService';
+import { getBooks } from '@/api/booksService';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
@@ -11,7 +11,7 @@ export default function SearchBar() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const books = await searchBook(query);
+      const books = await getBooks(query);
       setBooks(books);
       console.log(books);
     } catch (err) {
