@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { Pool } from 'pg';
+import { pool } from './db.ts';
 import session from 'express-session';
 import passport from './auth/passport.ts';
 import authRoutes from './auth/index.ts';
@@ -32,16 +32,6 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/books', booksRoutes);
 app.use('/shelves', libraryRoutes);
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-
-pool.connect()
-  .then((client) => {
-    console.log('Connected successfully!');
-  })
-  .catch(err => {
-    console.error('Connection failed:', err.message);
-  });
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', server: 'running' });
