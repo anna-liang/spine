@@ -7,11 +7,11 @@ export const fetchBooksFromGoogle = async (query: string) => {
     );
     return response.data;
   } catch (err) {
-    console.error(err);
+    console.error(err); // TODO: consistent error handling
   }
 };
 
-export const fetchOneBookById = async (id: string) => {
+export const fetchBookById = async (id: string) => {
   try {
     const response = await axios.get(
       `${process.env.GOOGLE_BOOKS_API_URI}/v1/volumes/${id}?key=${process.env.GOOGLE_BOOKS_DEV_API_KEY}`,
@@ -19,6 +19,6 @@ export const fetchOneBookById = async (id: string) => {
 
     return response.data;
   } catch (err) {
-    throw err;
+    throw err; // TODO: consistent error handling
   }
 };

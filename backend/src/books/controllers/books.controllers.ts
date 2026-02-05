@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as booksService from '../services/books.services.ts';
+import { fetchBooksFromGoogle, fetchBookById} from '../services/books.services.ts';
 
 export const getBooks = async (req: Request, res: Response) => {
   const query = req.query.q as string;
@@ -8,7 +8,7 @@ export const getBooks = async (req: Request, res: Response) => {
   }
 
   try {
-    const results = await booksService.fetchBooksFromGoogle(query);
+    const results = await fetchBooksFromGoogle(query);
     return res.json({ items: results.items || [] });
   } catch (err) {
     console.error(err);
@@ -23,7 +23,7 @@ export const getBookById = async (req: Request, res: Response) => {
   }
 
   try {
-    const results = await booksService.fetchOneBookById(id);
+    const results = await fetchBookById(id);
     return res.json({ results });
   } catch (err) {
     console.error(err);
