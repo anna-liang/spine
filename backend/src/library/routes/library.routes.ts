@@ -1,8 +1,5 @@
 import express from 'express';
-// import {
-//   searchBooks,
-//   searchBookById,
-// } from '../controllers/books.controllers.ts';
+import { createShelf, updateShelf, getShelves, getShelf, deleteShelf, addBookToShelf, deleteBookFromShelf } from '../controllers/library.controllers.ts';
 import { isUserLoggedIn } from '../../middleware/auth.middleware.ts';
 
 const router = express.Router();
@@ -10,42 +7,30 @@ const router = express.Router();
 /**
  * Creates a new shelf
  */
-router.post('/', isUserLoggedIn, () => {
-  // user id?
-});
+router.post('/', isUserLoggedIn, createShelf);
 /**
  * Updates an existing shelf
  */
-router.patch('/:shelfId', isUserLoggedIn, () => {
-  // lets user update name of library
-});
+router.patch('/:shelfId', isUserLoggedIn, updateShelf);
 /**
- * Adds a movie to a shelf
+ * Adds a book to a shelf
  */
-router.post('/:shelfId/movies', isUserLoggedIn, () => {
-  // should take a book id
-  // user id?
-  // should take an optional shelf id (if no id, default shelf)
-});
+router.post('/:shelfId/books', isUserLoggedIn, addBookToShelf);
 /**
- * Deletes a movie from library
+ * Deletes a book from library
  */
-router.delete('/:shelfId/movies/:movieId', isUserLoggedIn, () => {
-  // should take a book id
-  // user id?
-  // should take an optional shelf id (if no id, default shelf)
-});
+router.delete('/:shelfId/books/:bookId', isUserLoggedIn, deleteBookFromShelf);
 /**
  * Gets all shelves for a user
  */
-router.get('/', isUserLoggedIn);
+router.get('/', isUserLoggedIn, getShelves);
 /**
  * Gets a specific shelf for a user
  */
-router.get('/:shelfId', isUserLoggedIn);
+router.get('/:shelfId', isUserLoggedIn, getShelf);
 /**
  * Deletes a shelf
  */
-router.delete('/:shelfId', isUserLoggedIn);
+router.delete('/:shelfId', isUserLoggedIn, deleteShelf);
 
 export default router;
