@@ -11,10 +11,6 @@ const router = express.Router();
 
 router.get('/google', googleAuth);
 
-router.get('/protected', isUserLoggedIn, (req, res) => {
-  res.send(`Hello ${req.user.displayName}!`);
-});
-
 router.get('/failure', (req, res) => {
   res.send('Something went wrong...');
 });
