@@ -9,7 +9,7 @@ export const getBooks = async (req: Request, res: Response) => {
 
   try {
     const results = await fetchBooksFromGoogle(query) || [];
-    return res.json(results.items);
+    return res.json(results);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to search books' });
@@ -24,7 +24,7 @@ export const getBookById = async (req: Request, res: Response) => {
 
   try {
     const results = await fetchBookById(id);
-    return res.json({ results });
+    return res.json(results);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to search book by id' });

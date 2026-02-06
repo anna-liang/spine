@@ -1,4 +1,4 @@
-interface GoogleVolume {
+export interface GoogleVolume {
   kind: string;
   id: string;
   etag: string;

@@ -1,0 +1,23 @@
+import type { GoogleVolume } from "../../books/models/books.dto.ts";
+import type { Book } from "../../books/models/book.models.ts";
+
+export function mapGoogleVolumeToBook(volume: GoogleVolume): Book {
+    const book: Book = {
+        id: volume.id,
+        title: volume.volumeInfo.title,
+        authors: volume.volumeInfo.authors ?? [],
+        publisher: volume.volumeInfo.publisher,
+        publishedDate: volume.volumeInfo.publishedDate,
+        description: volume.volumeInfo.description,
+        pageCount: volume.volumeInfo.pageCount,
+        mainCategory: volume.volumeInfo.mainCategory,
+        categories: volume.volumeInfo.categories,
+        averageRating: volume.volumeInfo.averageRating,
+        ratingsCount: volume.volumeInfo.averageRating,
+        image: volume.volumeInfo.imageLinks
+            ? volume.volumeInfo.imageLinks.thumbnail
+            : '',
+        previewLink: volume.volumeInfo.previewLink,
+    };
+    return book;
+}
