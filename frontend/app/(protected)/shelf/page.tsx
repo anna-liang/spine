@@ -1,18 +1,23 @@
 "use client"
-import { addBookToShelf, createShelf, getShelf, getShelves, updateShelf } from "@/api/libraryService";
+import { addBookToShelf, getShelf, updateShelf } from "@/api/libraryService";
 import { ShelfPrivacy } from "@/types/library";
 import { useState } from "react";
+import { useShelves } from "@/app/queries/useShelves";
+import { useCreateShelf } from "@/app/queries/useCreateShelf";
 
 export default function Page() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [privacy, setPrivacy] = useState<ShelfPrivacy>(ShelfPrivacy.PRIVATE)
   const [error, setError] = useState('')
+  const { data } = useShelves()
+  console.log('shelves', data)
+  const createCollection = useCreateShelf()
 
   const handleCreateShelf = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await createShelf({ name, description, privacy })
+      createCollection.mutate({ name, description, privacy })
 
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -43,7 +48,8 @@ export default function Page() {
 
   const handleGetShelves = async () => {
     try {
-      await getShelves()
+      // const { data } = await getShelves.refetch()
+      // console.log('get shelves', data)
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error(err.message)
