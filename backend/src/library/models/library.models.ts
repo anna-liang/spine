@@ -1,5 +1,3 @@
-import type { Book } from "../../books/models/book.models.ts";
-
 export const ShelfPrivacy = {
   PRIVATE: "private",
   PUBLIC: "public",
@@ -19,7 +17,6 @@ export interface Shelf {
   id: string,
   name: string,
   description?: string,
-  books: Book[],
   owner: string,
   privacy: ShelfPrivacy,
   createdAt: string

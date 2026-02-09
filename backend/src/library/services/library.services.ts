@@ -11,12 +11,12 @@ import type { UserBookRow, ShelfBookRow } from '../models/library.db.types.ts';
 export const createShelf = async ({ name, description, owner, privacy }: { name: string, description?: string, owner: string, privacy: ShelfPrivacy }) => {
   try {
     const result = await pool.query<Shelf>(`
-        INSERT INTO "shelf" (id, name, description, books, owner, privacy, created_at)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO "shelf" (id, name, description, owner, privacy, created_at)
+        VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (name) DO NOTHING
         RETURNING *;
         `,
-      [uuidv4(), name, description, [], owner, privacy, dayjs(new Date())]
+      [uuidv4(), name, description, owner, privacy, dayjs(new Date())]
     )
     if (result.rows.length === 0) {
       throw new HttpError("A shelf with this name already exists.", 409)
@@ -32,8 +32,8 @@ export const updateShelf = async ({ name, description, privacy, shelfId }: { nam
     const result = await pool.query<Shelf>(`
           UPDATE "shelf"
           SET
-            name = $1,
-            description = $2,
+            name = COALESCE(NULLIF($1, ''), name),
+            description = COALESCE($2, description),
             privacy = $3
           WHERE id = $4
           RETURNING *;
@@ -174,26 +174,6 @@ export const addBookToShelf = async ({ shelfId, bookId, owner }: { shelfId: stri
     )
   } catch (err) {
     console.log(err)
-    throw err
-  }
-  // update shelf
-  try {
-    // TODO: create type for return object
-    const shelfTableResult = await pool.query<Shelf>(`
-        UPDATE "shelf"
-        SET books = (
-          SELECT ARRAY(
-            SELECT DISTINCT b
-            FROM unnest(books || ARRAY[$1]) AS b
-          )
-        )
-        WHERE id = $2
-        RETURNING *;
-        `,
-      [userBookId, shelfId]
-    )
-  } catch (err) {
-    console.log('add to shelf table err', err)
     throw err
   }
   return
