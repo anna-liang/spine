@@ -7,6 +7,7 @@ import { useCreateShelf } from "@/app/queries/useCreateShelf";
 import { useUpdateShelf } from "@/app/queries/useUpdateShelf";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddBookToShelf } from "@/app/queries/useAddBookToShelf";
+import { useRecommendations } from "@/app/queries/useRecommendations";
 
 export default function Page() {
   const queryClient = useQueryClient()
@@ -20,6 +21,7 @@ export default function Page() {
   const addBookToShelf = useAddBookToShelf()
   const [shelfId, setShelfId] = useState('')
   const { data } = useShelf({ id: shelfId || undefined })
+  const getRecommendations = useRecommendations()
 
   const handleCreateShelf = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -90,9 +92,24 @@ export default function Page() {
     console.log('Current queries:')
     queries.forEach(q => console.log(q.queryKey))
   }
+
+  const handleGetRecommendations = async () => {
+    try {
+      await getRecommendations.refetch()
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message)
+        setError(err.message);
+      } else {
+        console.error(err)
+        setError(`Unknown Error: ${err}`)
+      }
+    }
+  }
   // TODO: form validation and error handling
   return (
     <div className="flex flex-col">
+      <button onClick={handleGetRecommendations}>Get Recommendations</button>
       <button onClick={printQueryKeys}>Print Query Keys</button>
       <p>CREATE SHELF:</p>
       <form onSubmit={handleCreateShelf}>

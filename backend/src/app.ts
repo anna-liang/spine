@@ -6,6 +6,7 @@ import passport from './auth/passport.ts';
 import authRoutes from './auth/index.ts';
 import booksRoutes from './books/index.ts';
 import libraryRoutes from './library/index.ts';
+import recommendationsRoutes from './recommendations/index.ts'
 
 const app = express();
 const sessionSecret = process.env.SESSION_SECRET;
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/books', booksRoutes);
 app.use('/shelves', libraryRoutes);
+app.use('/recommendations', recommendationsRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', server: 'running' });
