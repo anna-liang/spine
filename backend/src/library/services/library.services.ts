@@ -140,7 +140,7 @@ export const addBookToShelf = async ({ shelfId, bookId, owner }: { shelfId: stri
         ON CONFLICT (user_id, book_id) DO NOTHING
         RETURNING *;
         `,
-      [uuidv4(), BookStatus.NOTREAD, owner, bookId]
+      [uuidv4(), BookStatus.TO_READ, owner, bookId]
     )
     if (insertUserBookTableResult.rows.length !== 0 && insertUserBookTableResult.rows[0]) {
       userBookId = insertUserBookTableResult.rows[0].id
