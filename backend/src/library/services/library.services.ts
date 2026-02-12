@@ -1,7 +1,7 @@
 import { pool } from '../../db.ts';
 import { v4 as uuidv4 } from 'uuid'
 import { BookStatus, ShelfPrivacy, type Shelf } from '../models/library.models.ts';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import { HttpError } from '../../utils/HttpError.ts';
 import { fetchBookById } from '../../books/services/books.services.ts';
 import type { Book } from '../../books/models/book.models.ts';
@@ -189,4 +189,30 @@ export const deleteBookFromShelf = async ({ bookId, shelfId }: { bookId: string,
   //     [bookId, shelfId]
   // );
 
+};
+
+export const updateBook = async ({ owner, bookId, status, rating, readAt }: { owner: string, bookId: string, status?: BookStatus, rating?: number | undefined, readAt?: string }) => {
+  try {
+    let readAtDate: Dayjs | string | undefined = readAt
+    if (!readAt && status === BookStatus.READ) readAtDate = dayjs(new Date())
+    const result = await pool.query<Shelf>(`
+          UPDATE "user_book"
+          SET
+            status = COALESCE($1, status),
+            user_rating = COALESCE($2, user_rating),
+            read_at = COALESCE($3, read_at)
+          WHERE user_id = $4 AND book_id = $5
+          RETURNING *;
+        `,
+      [status, rating, readAtDate, owner, bookId]
+    )
+    console.log(result.rows)
+    if (result.rows.length === 0) {
+      throw new HttpError("Unexpected error updating shelf", 500)
+    }
+    return result.rows
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };

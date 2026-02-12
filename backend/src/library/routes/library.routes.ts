@@ -1,5 +1,5 @@
 import express from 'express';
-import { createShelf, updateShelf, getShelves, getShelf, deleteShelf, addBookToShelf, deleteBookFromShelf } from '../controllers/library.controllers.ts';
+import { createShelf, updateShelf, getShelves, getShelf, deleteShelf, addBookToShelf, deleteBookFromShelf, updateBook } from '../controllers/library.controllers.ts';
 import { isUserLoggedIn } from '../../middleware/auth.middleware.ts';
 
 const router = express.Router();
@@ -32,5 +32,9 @@ router.get('/:shelfId', isUserLoggedIn, getShelf);
  * Deletes a shelf
  */
 router.delete('/:shelfId', isUserLoggedIn, deleteShelf);
+/**
+ * Updates a book
+ */
+router.patch('/books/:bookId', isUserLoggedIn, updateBook)
 
 export default router;
