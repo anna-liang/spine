@@ -44,14 +44,19 @@ export const getRecommendationsForBook = async (req: Request, res: Response) => 
 
 export const getRecommendationsForShelf = async (req: Request, res: Response) => {
     const shelfId = req.params.shelfId as string
+    const limitParam = req.query?.limit as string
+    let limit: number = 20;
     if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized Access' });
     }
     if (!shelfId) {
         return res.status(400).json({ error: 'Missing parameter "shelfId"' });
     }
+    if (limitParam) {
+        limit = limitParam ? parseInt(limitParam) : limit
+    }
     try {
-        const results = await recommendationsService.getRecommendationsForShelf({ shelfId }) || [];
+        const results = await recommendationsService.getRecommendationsForShelf({ owner: req.user.id, shelfId, limit }) || [];
         return res.json(results);
     } catch (err: any) {
         return res.status(err.status || 500).json({ error: err.message });

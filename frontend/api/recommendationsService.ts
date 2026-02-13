@@ -13,7 +13,6 @@ export const getRecommendationsForUser = async () => {
             withCredentials: true
         }
         );
-        console.log('returned recommendations', res.data)
         return res.data
 
     } catch (err) {
@@ -32,7 +31,6 @@ export const getRecommendationsForBook = async ({ bookId }: { bookId: string }) 
             withCredentials: true
         }
         );
-        console.log('returned recommendations', res.data)
         return res.data
 
     } catch (err) {
@@ -40,11 +38,11 @@ export const getRecommendationsForBook = async ({ bookId }: { bookId: string }) 
     }
 };
 
-export const getRecommendationsForShelf = async () => {
+export const getRecommendationsForShelf = async ({ shelfId }: { shelfId: string }) => {
     try {
         const cookieHeader = (await cookies()).toString();
         const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_DEV_API_URL}/recommendations/shelf`, {
+            `${process.env.NEXT_PUBLIC_DEV_API_URL}/recommendations/shelf/${shelfId}`, {
             headers: {
                 cookie: cookieHeader,
             },
