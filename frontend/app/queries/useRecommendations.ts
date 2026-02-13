@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { getRecommendations } from '@/api/recommendationsService'
+import { getRecommendationsForUser } from '@/api/recommendationsService'
 
-export const useRecommendations = () => {
+export const useRecommendationsUser = () => {
     return useQuery({
-        queryKey: ['recommendations'],
-        queryFn: getRecommendations,
+        queryKey: ['recommendations', 'user'],
+        queryFn: getRecommendationsForUser,
         staleTime: 5 * 60000
     })
 }

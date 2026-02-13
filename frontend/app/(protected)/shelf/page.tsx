@@ -1,5 +1,5 @@
 "use client"
-import { ShelfPrivacy } from "@/types/library";
+import { BookStatus, ShelfPrivacy } from "@/types/library";
 import { useState } from "react";
 import { useShelves } from "@/app/queries/useShelves";
 import { useShelf } from "@/app/queries/useShelf";
@@ -7,7 +7,8 @@ import { useCreateShelf } from "@/app/queries/useCreateShelf";
 import { useUpdateShelf } from "@/app/queries/useUpdateShelf";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddBookToShelf } from "@/app/queries/useAddBookToShelf";
-import { useRecommendations } from "@/app/queries/useRecommendations";
+import { useRecommendationsUser } from "@/app/queries/useRecommendations";
+import { useUpdateBook } from "@/app/queries/useUpdateBook";
 
 export default function Page() {
   const queryClient = useQueryClient()
@@ -21,7 +22,8 @@ export default function Page() {
   const addBookToShelf = useAddBookToShelf()
   const [shelfId, setShelfId] = useState('')
   const { data } = useShelf({ id: shelfId || undefined })
-  const getRecommendations = useRecommendations()
+  const updateBook = useUpdateBook()
+  const getRecommendationsUser = useRecommendationsUser()
 
   const handleCreateShelf = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -84,7 +86,7 @@ export default function Page() {
   }
 
   const handleSaveBook = () => {
-    addBookToShelf.mutate({ shelfId: 'aaa96763-e8c5-4d03-aef1-83590ca0590e', bookId: 'nZk0AgAAQBAJ' })
+    addBookToShelf.mutate({ shelfId: 'aaa96763-e8c5-4d03-aef1-83590ca0590e', bookId: '30UlEAAAQBAJ' })
   }
 
   const printQueryKeys = () => {
@@ -95,7 +97,22 @@ export default function Page() {
 
   const handleGetRecommendations = async () => {
     try {
-      await getRecommendations.refetch()
+      await getRecommendationsUser.refetch()
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message)
+        setError(err.message);
+      } else {
+        console.error(err)
+        setError(`Unknown Error: ${err}`)
+      }
+    }
+  }
+
+  const handleUpdateBook = async () => {
+    try {
+      // await updateShelf({ name, description, privacy, id: '3eac5ad2-c2de-4348-8231-398f273e7f33' })
+      updateBook.mutate({ bookId: '30UlEAAAQBAJ', status: BookStatus.READ, rating: 1 })
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error(err.message)
@@ -137,6 +154,8 @@ export default function Page() {
         </select>
         <button type="submit">Update Shelf</button>
       </form>
+
+      <button onClick={handleUpdateBook}>UPDATE BOOK</button>
     </div>
   );
 }
