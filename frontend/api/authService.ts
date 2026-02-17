@@ -16,6 +16,6 @@ export const getUser = async () => {
     throw new Error('Failed to fetch user');
   }
 
-  const data = res.data;
+  const data = Object.keys(res.data).length === 0 ? undefined : res.data;
   return data;
 };

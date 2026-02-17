@@ -5,7 +5,6 @@ import {
   getUser,
   logout,
 } from '../controllers/auth.controllers.ts';
-import { isUserLoggedIn } from '../../middleware/auth.middleware.ts';
 
 const router = express.Router();
 

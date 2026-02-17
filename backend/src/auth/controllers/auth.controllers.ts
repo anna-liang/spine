@@ -12,7 +12,7 @@ export const googleCallback = passport.authenticate('google', {
 
 export const getUser = (req: Request, res: Response) => {
   return res.json({
-    user: req.user,
+    ...req.user,
   });
 };
 
