@@ -12,14 +12,16 @@ export default async function ProtectedLayout({
 
   return (
     <div className='flex min-h-screen items-center flex-col'>
-      <div className='flex min-w-screen justify-center mt-2'>
-        <h1 className='text-6xl'>Bookends</h1>
-        <div className='absolute right-2 top-2'>
-          {user ? <ProfilePicture src={user.picture} width={55} height={55} alt='User Profile Picture' style="rounded-full" /> : <a href={`${process.env.NEXT_PUBLIC_DEV_API_URL}/auth/google`}>
-            <SocialButton social="google" theme="brand">
-              Sign in with Google
-            </SocialButton>
-          </a>}
+      <div className='bg-latte'>
+        <div className='flex min-w-screen justify-center mt-2 mb-3'>
+          <h1 className='text-6xl text-white'>BOOKENDS</h1>
+          <div className='absolute right-4 top-3'>
+            {user ? <ProfilePicture src={user.picture} width={55} height={55} alt='User Profile Picture' style="rounded-full" /> : <a href={`${process.env.NEXT_PUBLIC_DEV_API_URL}/auth/google`}>
+              <SocialButton social="google" theme="brand" className='top-1'>
+                Sign in with Google
+              </SocialButton>
+            </a>}
+          </div>
         </div>
       </div >
       <SearchBar />
