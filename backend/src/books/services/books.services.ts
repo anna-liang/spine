@@ -26,12 +26,12 @@ export const fetchBookById = async (id: string): Promise<Book> => {
     try {
       // add to book table
       await pool.query<GoogleVolume>(`
-            INSERT INTO "book" (id, title, authors, publisher, published_date, description, page_count, main_category, categories, average_rating, ratings_count, thumbnail, language, preview_link, info_link)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+            INSERT INTO "book" (id, title, authors, publisher, published_date, description, page_count, main_category, categories, average_rating, ratings_count, thumbnail, language, preview_link, info_link, saleability, list_price, retail_price, buy_link)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
             ON CONFLICT (id) DO NOTHING
             RETURNING *;
             `,
-        [mappedBook.id, mappedBook.title, mappedBook.authors, mappedBook.publisher, mappedBook.publishedDate, mappedBook.description, mappedBook.pageCount, mappedBook.mainCategory, mappedBook.categories, mappedBook.averageRating, mappedBook.ratingsCount, mappedBook.image, mappedBook.language, mappedBook.previewLink, mappedBook.infoLink] // TODO: write a helper function
+        [mappedBook.id, mappedBook.title, mappedBook.authors, mappedBook.publisher, mappedBook.publishedDate, mappedBook.description, mappedBook.pageCount, mappedBook.mainCategory, mappedBook.categories, mappedBook.averageRating, mappedBook.ratingsCount, mappedBook.image, mappedBook.language, mappedBook.previewLink, mappedBook.infoLink, mappedBook.saleability, mappedBook.listPrice, mappedBook.retailPrice, mappedBook.buyLink] // TODO: write a helper function
       )
     } catch (err) {
       console.error(err);

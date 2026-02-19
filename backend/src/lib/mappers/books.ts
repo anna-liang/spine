@@ -30,7 +30,11 @@ export function mapGoogleVolumeToBook(volume: GoogleVolume): Book {
             : '',
         previewLink: volume.volumeInfo.previewLink,
         language: volume.volumeInfo.language,
-        infoLink: volume.volumeInfo.infoLink
+        infoLink: volume.volumeInfo.infoLink,
+        saleability: volume.saleInfo.saleability,
+        listPrice: volume.saleInfo.listPrice ?? {},
+        retailPrice: volume.saleInfo.retailPrice ?? {},
+        buyLink: volume.saleInfo.buyLink ?? ''
     };
     return book;
 }

@@ -14,4 +14,22 @@ export interface Book {
   language: string;
   previewLink: string;
   infoLink: string;
+  saleability?: string;
+  listPrice?: {
+    amount?: number;
+    currencyCode?: string
+  },
+  retailPrice?: {
+    amount?: number;
+    currencyCode?: string
+  },
+  buyLink?: string;
 }
+
+export const Saleability = {
+  FOR_SALE: "FOR_SALE",
+  FREE: "FREE",
+  NOT_FOR_SALE: "NOT_FOR_SALE"
+} as const;
+
+export type Saleability = typeof Saleability[keyof typeof Saleability];

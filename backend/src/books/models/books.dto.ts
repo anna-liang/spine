@@ -1,3 +1,5 @@
+import type { Saleability } from "./book.models.ts";
+
 export interface GoogleVolume {
   kind: string;
   id: string;
@@ -27,7 +29,21 @@ export interface GoogleVolume {
     previewLink: string;
     infoLink: string;
     canonicalVolumeLink: string;
-  };
+  },
+  saleInfo: {
+    country: string,
+    saleability: Saleability,
+    isEbook: boolean,
+    listPrice?: {
+      amount: number,
+      currencyCode: string
+    },
+    retailPrice?: {
+      amount: number,
+      currencyCode: string
+    },
+    buyLink?: string
+  }
 }
 
 export interface GoogleSearchVolumesResponse {
