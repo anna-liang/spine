@@ -116,20 +116,6 @@ export const addBookToShelf = async ({ shelfId, bookId, owner }: { shelfId: stri
     console.log('Error fetching book:', err)
     throw err
   }
-  // insert in book
-  try {
-    await pool.query<GoogleVolume>(`
-        INSERT INTO "book" (id, title, authors, publisher, published_date, description, page_count, main_category, categories, average_rating, ratings_count, thumbnail, language, preview_link, info_link)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-        ON CONFLICT (id) DO NOTHING
-        RETURNING *;
-        `,
-      [bookToAdd.id, bookToAdd.title, bookToAdd.authors, bookToAdd.publisher, bookToAdd.publishedDate, bookToAdd.description, bookToAdd.pageCount, bookToAdd.mainCategory, bookToAdd.categories, bookToAdd.averageRating, bookToAdd.ratingsCount, bookToAdd.image, bookToAdd.language, bookToAdd.previewLink, bookToAdd.infoLink] // TODO: write a helper function
-    )
-  } catch (err) {
-    console.log('book table insert error', err)
-    throw err
-  }
   // insert in user_book
   try {
     const insertUserBookTableResult = await pool.query<UserBookRow>(`
