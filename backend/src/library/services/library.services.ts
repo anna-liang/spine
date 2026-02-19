@@ -195,7 +195,7 @@ export const deleteBookFromShelf = async ({ userBookId, shelfId }: { userBookId:
   }
 };
 
-export const updateBook = async ({ owner, bookId, status, rating, readAt }: { owner: string, bookId: string, status?: BookStatus, rating?: number | undefined, readAt?: string }) => {
+export const updateUserBook = async ({ owner, bookId, status, rating, readAt }: { owner: string, bookId: string, status?: BookStatus, rating?: number | undefined, readAt?: string }) => {
   try {
     let readAtDate: Dayjs | string | undefined = readAt
     if (!readAt && status === BookStatus.READ) readAtDate = dayjs(new Date())
@@ -213,6 +213,21 @@ export const updateBook = async ({ owner, bookId, status, rating, readAt }: { ow
     if (result.rows.length === 0) {
       throw new HttpError("Unexpected error updating shelf", 500)
     }
+    return result.rows
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const getUserBook = async ({ owner, bookId }: { owner: string, bookId: string }) => {
+  try {
+    const result = await pool.query<Shelf>(`
+        SELECT * FROM "user_book"
+        WHERE user_id = $1 AND book_id = $2
+        `,
+      [owner, bookId]
+    )
     return result.rows
   } catch (err) {
     console.error(err);

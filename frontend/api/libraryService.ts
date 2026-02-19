@@ -98,7 +98,7 @@ export const addBookToShelf = async ({ shelfId, bookId }: { shelfId: string, boo
     }
 };
 
-export const updateBook = async ({ bookId, status, rating, readAt }: { bookId: string, status?: BookStatus, rating?: number, readAt?: string }) => {
+export const updateUserBook = async ({ bookId, status, rating, readAt }: { bookId: string, status?: BookStatus, rating?: number, readAt?: string }) => {
     try {
         const cookieHeader = (await cookies()).toString();
         const res = await axios.patch(
@@ -123,6 +123,24 @@ export const deleteBookFromShelf = async ({ userBookId, shelfId }: { userBookId:
         const cookieHeader = (await cookies()).toString();
         const res = await axios.delete(
             `${process.env.NEXT_PUBLIC_DEV_API_URL}/shelves/${shelfId}/books/${userBookId}`, {
+            headers: {
+                cookie: cookieHeader,
+            },
+            withCredentials: true
+        }
+        );
+        return res.data
+
+    } catch (err) {
+        throw err
+    }
+};
+
+export const getUserBook = async ({ bookId }: { bookId: string }) => {
+    try {
+        const cookieHeader = (await cookies()).toString();
+        const res = await axios.get(
+            `${process.env.NEXT_PUBLIC_DEV_API_URL}/shelves/books/${bookId}`, {
             headers: {
                 cookie: cookieHeader,
             },

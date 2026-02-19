@@ -109,7 +109,7 @@ export const deleteBookFromShelf = async (req: Request, res: Response) => {
     }
 };
 
-export const updateBook = async (req: Request, res: Response) => {
+export const updateUserBook = async (req: Request, res: Response) => {
     const bookId = req.params.bookId as string
     const { status, rating, readAt } = req.body;
     let parsedRating: undefined | number = undefined
@@ -123,8 +123,24 @@ export const updateBook = async (req: Request, res: Response) => {
         parsedRating = parseInt(rating)
     }
     try {
-        await libraryService.updateBook({ bookId, owner: req.user.id, status, rating: parsedRating, readAt });
+        await libraryService.updateUserBook({ bookId, owner: req.user.id, status, rating: parsedRating, readAt });
         return res.sendStatus(200)
+    } catch (err: any) {
+        return res.status(err.status || 500).json({ error: err.message });
+    }
+};
+
+export const getUserBook = async (req: Request, res: Response) => {
+    const bookId = req.params.bookId as string
+    if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized Access' });
+    }
+    if (!bookId) {
+        return res.status(400).json({ error: 'Missing parameter "bookId"' });
+    }
+    try {
+        const results = await libraryService.getUserBook({ owner: req.user.id, bookId });
+        return res.json(results);
     } catch (err: any) {
         return res.status(err.status || 500).json({ error: err.message });
     }
